@@ -209,65 +209,6 @@ class _MovieDetailsScreenBodyState extends State<MovieDetailsScreenBody> {
                                 children: [
                                   for (int i = 0; i < 9; i++)
                                     CastItem(cast: mcavm.movieCredits.cast![i]),
-                                  ScaleTap(
-                                    onPressed: () {},
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 15 * responsiveSize.width,
-                                          horizontal:
-                                              15 * responsiveSize.height),
-                                      child: Container(
-                                        width: 160 * responsiveSize.width,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(10)),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.5),
-                                              spreadRadius:
-                                                  5 * responsiveSize.width,
-                                              blurRadius:
-                                                  7 * responsiveSize.width,
-                                              offset: const Offset(0,
-                                                  3), // changes position of shadow
-                                            ),
-                                          ],
-                                        ),
-                                        child: AspectRatio(
-                                          aspectRatio: 1 / 2,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "View\nMore...",
-                                                style: TextStyle(
-                                                    color: PColors.darkBlue,
-                                                    fontFamily: Assets
-                                                        .fontsSVNGilroyRegular,
-                                                    fontSize: 20 *
-                                                        responsiveSize.width),
-                                              ),
-                                              SizedBox(
-                                                height:
-                                                    10 * responsiveSize.height,
-                                              ),
-                                              SvgPicture.asset(
-                                                Assets.svgsIcShare,
-                                                width:
-                                                    35 * responsiveSize.width,
-                                                height:
-                                                    35 * responsiveSize.width,
-                                                color: PColors.darkBlue,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
                                 ],
                               )
                             : Row(

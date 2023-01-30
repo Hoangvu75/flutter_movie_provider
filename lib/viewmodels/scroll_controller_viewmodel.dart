@@ -17,9 +17,11 @@ class ScrollControllerViewModel with ChangeNotifier {
   void scrollControllerChanged() {
     if (bodyScrollController!.offset > scrollOffset) {
       isTitleOnTop = true;
+      print("ontop");
       notifyListeners();
     } else if (isTitleOnTop) {
       isTitleOnTop = false;
+      print("outtop");
       notifyListeners();
     }
   }

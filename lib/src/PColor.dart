@@ -5,6 +5,8 @@ class PColors {
   static Color backgroundBottom = const Color.fromRGBO(255, 255, 255, 1.0);
   static Color darkBlue = const Color.fromRGBO(8, 0, 164, 1);
   static Color blueMain = const Color.fromRGBO(33, 57, 146, 1.0);
+  static Color lightOrange = const Color.fromRGBO(255, 58, 0, 1.0);
+  static Color darkBrown = const Color.fromRGBO(51, 51, 51, 1.0);
 
   static Color defaultText = Colors.black;
   static Color lightColorText = Colors.black54;

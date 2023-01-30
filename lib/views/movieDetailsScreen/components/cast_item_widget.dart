@@ -34,56 +34,54 @@ class CastItem extends StatelessWidget {
               ),
             ],
           ),
-          child: AspectRatio(
-            aspectRatio: 1 / 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: cast.profilePath != null
-                        ? Image.network(
-                            'https://image.tmdb.org/t/p/w500${cast.profilePath}',
-                            fit: BoxFit.cover,
+          child: Padding(
+            padding: EdgeInsets.all(8 * responsiveSize.width),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: cast.profilePath != null
+                      ? Image.network(
+                          'https://image.tmdb.org/t/p/w500${cast.profilePath}',
+                          fit: BoxFit.cover,
+                          height: 200,
+                          width: 150,
+                        )
+                      : Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
                             height: 200,
                             width: 150,
-                          )
-                        : Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              height: 200,
-                              width: 150,
-                              color: Colors.white,
-                            ),
+                            color: Colors.white,
                           ),
-                  ),
-                  SizedBox(height: 10 * responsiveSize.height),
-                  Text.rich(
-                      TextSpan(
-                        text: cast.name.toString(),
-                        style: TextStyle(
-                            fontSize: 15 * responsiveSize.width,
-                            color: PColors.defaultText,
-                            fontFamily: Assets.fontsSVNGilroySemiBold),
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis),
-                  SizedBox(height: 10 * responsiveSize.height),
-                  Text.rich(
-                      TextSpan(
-                        text: cast.character.toString(),
-                        style: TextStyle(
-                            fontSize: 13 * responsiveSize.width,
-                            color: PColors.defaultText,
-                            fontFamily: Assets.fontsSVNGilroyRegular),
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis),
-                ],
-              ),
+                        ),
+                ),
+                SizedBox(height: 10 * responsiveSize.height),
+                Text.rich(
+                    TextSpan(
+                      text: cast.name.toString(),
+                      style: TextStyle(
+                          fontSize: 15 * responsiveSize.width,
+                          color: PColors.defaultText,
+                          fontFamily: Assets.fontsSVNGilroySemiBold),
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis),
+                SizedBox(height: 10 * responsiveSize.height),
+                Text.rich(
+                    TextSpan(
+                      text: cast.character.toString(),
+                      style: TextStyle(
+                          fontSize: 13 * responsiveSize.width,
+                          color: PColors.defaultText,
+                          fontFamily: Assets.fontsSVNGilroyRegular),
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis),
+                SizedBox(height: 10 * responsiveSize.height),
+              ],
             ),
           ),
         ),

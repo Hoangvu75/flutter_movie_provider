@@ -14,4 +14,10 @@ class Assets {
   static const String svgsIcWrongFormatQr = 'assets/svgs/ic_wrong_format_qr.svg';
   static const String svgsIcSystemError = 'assets/svgs/ic_system_error.svg';
   static const String svgsIcUnion = 'assets/svgs/ic_union.svg';
+  static const String svgsAvatarDefault = 'assets/svgs/avatar_default.svg';
+  static const String svgsIcContact = 'assets/svgs/ic_contact.svg';
+  static const String svgsIcAgendaLogout = 'assets/svgs/ic_agenda_logout.svg';
+  static const String svgsIcProfileSpeakerMessages = 'assets/svgs/ic_profile_speaker_messages.svg';
+  static const String svgsIcQa = 'assets/svgs/ic_qa.svg';
+  static const String svgsIcGameCode = 'assets/svgs/ic_game_code.svg';
 }

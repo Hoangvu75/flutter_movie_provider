@@ -13,7 +13,8 @@ class MovieListWidget extends StatelessWidget {
   final String title;
   final Widget viewMoreInScreen;
 
-  const MovieListWidget({super.key,
+  const MovieListWidget({
+    super.key,
     required this.movies,
     required this.title,
     required this.viewMoreInScreen,
@@ -38,12 +39,20 @@ class MovieListWidget extends StatelessWidget {
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           physics: const BouncingScrollPhysics(),
-          child: Row(
-            children: [
-              for (int i = 0; i < 5; i++)
-                MovieItem(movie: movies[i])
-            ],
-          ),
+          child: (movies.length >= 5)
+              ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    for (int i = 0; i < 5; i++) MovieItem(movie: movies[i])
+                  ],
+                )
+              : Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    for (int i = 0; i < movies.length; i++)
+                      MovieItem(movie: movies[i])
+                  ],
+                ),
         ),
         SizedBox(
           width: MediaQuery.of(context).size.width,
@@ -53,8 +62,7 @@ class MovieListWidget extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => viewMoreInScreen),
+                  MaterialPageRoute(builder: (context) => viewMoreInScreen),
                 );
               },
               child: Row(
