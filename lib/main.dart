@@ -1,12 +1,19 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:movie_app_mvvm/splash.dart';
 import 'package:movie_app_mvvm/src/PColor.dart';
 import 'package:movie_app_mvvm/utils/app_utils.dart';
 import 'package:movie_app_mvvm/views/homeScreen/home_screen.dart';
+import 'package:movie_app_mvvm/views/recommendScreen/recommend_screen.dart';
+import 'package:movie_app_mvvm/views/searchScreen/search_screen.dart';
+import 'package:movie_app_mvvm/views/webviewScreen/webview_screen.dart';
 
 import 'generated/assets.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -16,6 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: false,
       ),
@@ -24,7 +32,51 @@ class MyApp extends StatelessWidget {
         '/': (context) => const SplashScreen(),
         '/home': (context) => const MainScreen(),
       },
+      builder: _builder(),
     );
+  }
+
+  Widget Function(BuildContext, Widget?) _builder({Widget Function(BuildContext, Widget?)? builder}) {
+    var newBuilder = EasyLoading.init(builder: builder);
+
+    return (BuildContext context, Widget? child) {
+      final mChild = child;
+      if (mChild != null) {
+        final widgetSize = MediaQuery.of(context).size;
+
+        final mResponsiveWidth = widgetSize.width / 375; // 375: Design width
+        final mResponsiveHeight = widgetSize.height / 812; // 812: Design height
+        final mResponsiveSize = Size(mResponsiveWidth, mResponsiveHeight);
+
+        if (mResponsiveWidth != responsiveSize.width || mResponsiveHeight != responsiveSize.height) {
+          if (widgetSize.width > 650) {
+            // AppUtils.isSuperBigPhone = true;
+          }
+
+          if (mResponsiveWidth > 1.2) {
+            responsiveSize = Size(1.2, mResponsiveHeight);
+          } else {
+            responsiveSize = mResponsiveSize;
+          }
+
+          if (kDebugMode) {
+            print(
+                "widgetSize width: ${widgetSize.width}\nwidgetSize height: ${widgetSize.height}\nresponsiveSize: "
+                "$responsiveSize\nmResponsiveHeight: $mResponsiveHeight");
+          }
+        }
+
+        return newBuilder(
+          context,
+          MediaQuery(
+            data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+            child: mChild,
+          ),
+        );
+      }
+
+      return Container();
+    };
   }
 }
 
@@ -46,8 +98,8 @@ class _MainScreenState extends State<MainScreen> {
         index: _currentIndex,
         children: <Widget>[
           const HomeScreen(),
-          Container(),
-          Container(),
+          const SearchScreen(),
+          const RecommendScreen(),
           Container(),
         ],
       ),
@@ -57,11 +109,14 @@ class _MainScreenState extends State<MainScreen> {
         child: FloatingActionButton(
           shape: const CircleBorder(),
           backgroundColor: PColors.blueMain,
-          onPressed: () {},
-          child: Icon(
-            Icons.qr_code_scanner,
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const WebviewScreen()));
+          },
+          child: SvgPicture.asset(
+            width: 35 * responsiveSize.width,
+            height: 35 * responsiveSize.height,
             color: Colors.white,
-            size: 30 * responsiveSize.width,
+            Assets.svgsWebview,
           ), //icon inside button
         ),
       ),
@@ -88,16 +143,11 @@ class _MainScreenState extends State<MainScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.home,
-                        color: _currentIndex == 0
-                            ? PColors.lightOrange
-                            : PColors.blueMain),
+                    Icon(Icons.movie_outlined, color: _currentIndex == 0 ? PColors.lightOrange : PColors.blueMain),
                     Text(
-                      "Home",
+                      "Movies",
                       style: TextStyle(
-                        color: _currentIndex == 0
-                            ? PColors.lightOrange
-                            : PColors.blueMain,
+                        color: _currentIndex == 0 ? PColors.lightOrange : PColors.blueMain,
                         fontFamily: Assets.fontsSVNGilroyRegular,
                         fontSize: 10 * responsiveSize.width,
                       ),
@@ -120,16 +170,11 @@ class _MainScreenState extends State<MainScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.search,
-                        color: _currentIndex == 1
-                            ? PColors.lightOrange
-                            : PColors.blueMain),
+                    Icon(Icons.search, color: _currentIndex == 1 ? PColors.lightOrange : PColors.blueMain),
                     Text(
                       "Search",
                       style: TextStyle(
-                        color: _currentIndex == 1
-                            ? PColors.lightOrange
-                            : PColors.blueMain,
+                        color: _currentIndex == 1 ? PColors.lightOrange : PColors.blueMain,
                         fontFamily: Assets.fontsSVNGilroyRegular,
                         fontSize: 10 * responsiveSize.width,
                       ),
@@ -155,16 +200,12 @@ class _MainScreenState extends State<MainScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.save_alt,
-                        color: _currentIndex == 2
-                            ? PColors.lightOrange
-                            : PColors.blueMain),
+                    Icon(Icons.recommend_outlined,
+                        color: _currentIndex == 2 ? PColors.lightOrange : PColors.blueMain),
                     Text(
-                      "Saved",
+                      "Suggest",
                       style: TextStyle(
-                        color: _currentIndex == 2
-                            ? PColors.lightOrange
-                            : PColors.blueMain,
+                        color: _currentIndex == 2 ? PColors.lightOrange : PColors.blueMain,
                         fontFamily: Assets.fontsSVNGilroyRegular,
                         fontSize: 10 * responsiveSize.width,
                       ),
@@ -188,15 +229,11 @@ class _MainScreenState extends State<MainScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(Icons.account_circle_outlined,
-                        color: _currentIndex == 3
-                            ? PColors.lightOrange
-                            : PColors.blueMain),
+                        color: _currentIndex == 3 ? PColors.lightOrange : PColors.blueMain),
                     Text(
                       "Account",
                       style: TextStyle(
-                        color: _currentIndex == 3
-                            ? PColors.lightOrange
-                            : PColors.blueMain,
+                        color: _currentIndex == 3 ? PColors.lightOrange : PColors.blueMain,
                         fontFamily: Assets.fontsSVNGilroyRegular,
                         fontSize: 10 * responsiveSize.width,
                       ),

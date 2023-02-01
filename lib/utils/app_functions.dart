@@ -10,8 +10,8 @@ import '../src/gradient_button.dart';
 class CustomDialog {
   bool isDialogShowing = false;
 
-  void showErrorDialog(BuildContext context, SvgPicture dialogSvgPicture,
-      String dialogTitle, String dialogContent, Function cancelCallback, Function confirmCallback) {
+  void showErrorDialog(BuildContext context, SvgPicture dialogSvgPicture, String dialogTitle, String dialogContent,
+      Function cancelCallback, Function confirmCallback) {
     if (!isDialogShowing) {
       isDialogShowing = true;
       showModalBottomSheet(

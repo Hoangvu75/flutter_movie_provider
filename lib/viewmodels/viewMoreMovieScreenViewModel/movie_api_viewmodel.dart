@@ -49,4 +49,10 @@ class MovieApiViewModel with ChangeNotifier {
     loading = false;
     notifyListeners();
   }
+
+  void onDispose() {
+    movieList = [];
+    title_1 = "";
+    title_2 = "";
+  }
 }

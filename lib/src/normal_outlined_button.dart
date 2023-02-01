@@ -7,6 +7,7 @@ import 'PColor.dart';
 class NormalOutlinedButton extends StatelessWidget {
   final String title;
   final Function() onTap;
+
   const NormalOutlinedButton({super.key, required this.title, required this.onTap});
 
   @override

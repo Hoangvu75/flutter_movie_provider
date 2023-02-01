@@ -8,16 +8,16 @@ import 'package:movie_app_mvvm/views/movieDetailsScreen/movie_details_screen.dar
 import '../../../apiResponse/movie_response.dart';
 import '../../../generated/assets.dart';
 
-class ViewMoreMovieItem extends StatefulWidget {
+class SearchMovieItemWidget extends StatefulWidget {
   final Movie movie;
 
-  const ViewMoreMovieItem({super.key, required this.movie});
+  const SearchMovieItemWidget({required Key key, required this.movie}) : super(key: key);
 
   @override
-  State<ViewMoreMovieItem> createState() => _ViewMoreMovieItemState();
+  State<SearchMovieItemWidget> createState() => _SearchMovieItemWidgetState();
 }
 
-class _ViewMoreMovieItemState extends State<ViewMoreMovieItem> {
+class _SearchMovieItemWidgetState extends State<SearchMovieItemWidget> {
   @override
   Widget build(BuildContext context) {
     return ScaleTap(
@@ -53,7 +53,7 @@ class _ViewMoreMovieItemState extends State<ViewMoreMovieItem> {
                   width: 120 * responsiveSize.width,
                   height: 160 * responsiveSize.width,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12.0),
+                    borderRadius: BorderRadius.circular(12 * responsiveSize.width),
                     child: Image.network(
                       'https://image.tmdb.org/t/p/w500${widget.movie.posterPath}',
                       fit: BoxFit.cover,

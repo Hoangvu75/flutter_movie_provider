@@ -19,33 +19,37 @@ class HomeScreenBody extends StatefulWidget {
   State<HomeScreenBody> createState() => _HomeScreenBodyState();
 }
 
-class _HomeScreenBodyState extends State<HomeScreenBody>
-    with TickerProviderStateMixin {
+class _HomeScreenBodyState extends State<HomeScreenBody> with TickerProviderStateMixin {
+  late HomeApiViewModel havm;
+
   @override
   void initState() {
-    Provider.of<HomeApiViewModel>(context, listen: false).fetchTrendingMovies();
-    Provider.of<HomeApiViewModel>(context, listen: false).fetchTrendingTvs();
-    Provider.of<HomeApiViewModel>(context, listen: false).fetchUpcomingMovies();
-    Provider.of<HomeApiViewModel>(context, listen: false).fetchPopularMovies();
-    Provider.of<HomeApiViewModel>(context, listen: false).fetchTopRatedMovies();
+    havm = Provider.of<HomeApiViewModel>(context, listen: false);
+
+    havm.fetchTrendingMovies();
+    havm.fetchTrendingTvs();
+    havm.fetchUpcomingMovies();
+    havm.fetchPopularMovies();
+    havm.fetchTopRatedMovies();
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final havm = Provider.of<HomeApiViewModel>(context);
+    havm = Provider.of<HomeApiViewModel>(context);
 
     return Container(
       decoration: BoxDecoration(
-          gradient: LinearGradient(
-        colors: [
-          PColors.backgroundTop,
-          PColors.backgroundBottom,
-        ],
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-      )),
+        gradient: LinearGradient(
+          colors: [
+            PColors.backgroundTop,
+            PColors.backgroundBottom,
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
       child: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: <Widget>[
@@ -53,14 +57,15 @@ class _HomeScreenBodyState extends State<HomeScreenBody>
             expandedHeight: 500 * responsiveSize.height,
             backgroundColor: const Color.fromRGBO(0, 0, 0, 0.75),
             leading: ScaleTap(
-                onPressed: () {
-                  showSideBar();
-                },
-                child: Icon(
-                  Icons.menu,
-                  color: Colors.white,
-                  size: 30 * responsiveSize.width,
-                )),
+              onPressed: () {
+                showSideBar();
+              },
+              child: Icon(
+                Icons.menu,
+                color: Colors.white,
+                size: 30 * responsiveSize.width,
+              ),
+            ),
             leadingWidth: 70,
             systemOverlayStyle: SystemUiOverlayStyle.light,
             pinned: true,
@@ -74,48 +79,61 @@ class _HomeScreenBodyState extends State<HomeScreenBody>
                   : Stack(
                       children: [
                         Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                    "https://image.tmdb.org/t/p/w500${havm.trendingMovieList[0].posterPath}"),
-                                fit: BoxFit.fitWidth,
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                "https://image.tmdb.org/t/p/w500${havm.trendingMovieList[0].posterPath}",
+                              ),
+                              fit: BoxFit.fitWidth,
+                            ),
+                          ),
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.transparent,
+                                  Colors.black,
+                                ],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
                               ),
                             ),
-                            child: Container(
-                                decoration: const BoxDecoration(
-                                    gradient: LinearGradient(
-                              colors: [
-                                Colors.transparent,
-                                Colors.black,
-                              ],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                            )))
-                            ),
+                          ),
+                        ),
                         Positioned(
                           bottom: 75 * responsiveSize.width,
                           left: 10 * responsiveSize.width,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Top trending movie",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: Assets.fontsSVNGilroyRegular,
-                                  fontSize: 20 * responsiveSize.width,
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width - 10 * responsiveSize.width,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Top trending movie",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: Assets.fontsSVNGilroyRegular,
+                                    fontSize: 20 * responsiveSize.width,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                havm.trendingMovieList[0].title.toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: Assets.fontsSVNGilroyBold,
-                                  fontSize: 25 * responsiveSize.width,
+                                SizedBox(
+                                  height: 10 * responsiveSize.height,
                                 ),
-                              ),
-                            ],
+                                Text.rich(
+                                  TextSpan(
+                                    text: havm.trendingMovieList[0].title.toString(),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: Assets.fontsSVNGilroyBold,
+                                      fontSize: 25 * responsiveSize.width,
+                                    ),
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                )
+                              ],
+                            ),
                           ),
                         ),
                         Positioned(
@@ -140,7 +158,8 @@ class _HomeScreenBodyState extends State<HomeScreenBody>
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => MovieDetailsScreen(id: havm.trendingMovieList[0].id!)),
+                                      builder: (context) => MovieDetailsScreen(id: havm.trendingMovieList[0].id!),
+                                    ),
                                   );
                                 },
                                 child: Container(
@@ -149,8 +168,7 @@ class _HomeScreenBodyState extends State<HomeScreenBody>
                                     color: Colors.white,
                                   ),
                                   child: Padding(
-                                    padding: EdgeInsets.all(
-                                        8 * responsiveSize.width),
+                                    padding: EdgeInsets.all(8 * responsiveSize.width),
                                     child: const Icon(
                                       Icons.play_arrow,
                                       color: Colors.black,
@@ -177,8 +195,7 @@ class _HomeScreenBodyState extends State<HomeScreenBody>
               child: MovieListWidget(
                   movies: havm.trendingMovieList,
                   title: "Trending Movies",
-                  viewMoreInScreen:
-                      const ViewMoreMovieScreen(type: "trending-movies")),
+                  viewMoreInScreen: const ViewMoreMovieScreen(type: "trending-movies")),
             ),
           ),
           SliverToBoxAdapter(
@@ -188,8 +205,7 @@ class _HomeScreenBodyState extends State<HomeScreenBody>
               child: MovieListWidget(
                   movies: havm.trendingTvList,
                   title: "Trending Tvs",
-                  viewMoreInScreen:
-                      const ViewMoreMovieScreen(type: "trending-tvs")),
+                  viewMoreInScreen: const ViewMoreMovieScreen(type: "trending-tvs")),
             ),
           ),
           SliverToBoxAdapter(
@@ -199,8 +215,7 @@ class _HomeScreenBodyState extends State<HomeScreenBody>
               child: MovieListWidget(
                   movies: havm.upcomingList,
                   title: "Upcoming",
-                  viewMoreInScreen:
-                      const ViewMoreMovieScreen(type: "upcoming")),
+                  viewMoreInScreen: const ViewMoreMovieScreen(type: "upcoming")),
             ),
           ),
           SliverToBoxAdapter(
@@ -220,8 +235,7 @@ class _HomeScreenBodyState extends State<HomeScreenBody>
               child: MovieListWidget(
                   movies: havm.topRatedList,
                   title: "Top Rated",
-                  viewMoreInScreen:
-                      const ViewMoreMovieScreen(type: "top-rated")),
+                  viewMoreInScreen: const ViewMoreMovieScreen(type: "top-rated")),
             ),
           ),
           SliverToBoxAdapter(
@@ -243,10 +257,12 @@ class _HomeScreenBodyState extends State<HomeScreenBody>
     Animation<Offset> slideAnimation = Tween<Offset>(
       begin: const Offset(-1.0, 0.0),
       end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: sidebarAnimationController,
-      curve: Curves.linear,
-    ));
+    ).animate(
+      CurvedAnimation(
+        parent: sidebarAnimationController,
+        curve: Curves.linear,
+      ),
+    );
 
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
@@ -256,11 +272,9 @@ class _HomeScreenBodyState extends State<HomeScreenBody>
       transitionAnimationController: sidebarAnimationController,
       constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width,
-          maxHeight: MediaQuery.of(context).size.height -
-              MediaQuery.of(context).padding.top),
+          maxHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top),
       builder: (BuildContext context) {
-        return SlideTransition(
-            position: slideAnimation, child: const MySidebar());
+        return SlideTransition(position: slideAnimation, child: const MySidebar());
       },
     );
   }

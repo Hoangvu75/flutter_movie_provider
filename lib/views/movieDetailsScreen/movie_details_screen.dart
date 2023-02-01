@@ -10,6 +10,7 @@ import 'movie_details_screen_body.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
   final int id;
+
   const MovieDetailsScreen({super.key, required this.id});
 
   @override
@@ -25,14 +26,11 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
         statusBarColor: Colors.transparent,
       ),
       child: Scaffold(
-        body: MultiProvider(
-            providers: [
-              ChangeNotifierProvider(create: (_) => MovieDetailsApiViewModel(widget.id)),
-              ChangeNotifierProvider(create: (_) => MovieCreditsApiViewModel(widget.id)),
-              ChangeNotifierProvider(create: (_) => ScrollControllerViewModel(200 * responsiveSize.height)),
-            ],
-            child: const MovieDetailsScreenBody()
-        ),
+        body: MultiProvider(providers: [
+          ChangeNotifierProvider(create: (_) => MovieDetailsApiViewModel(widget.id)),
+          ChangeNotifierProvider(create: (_) => MovieCreditsApiViewModel(widget.id)),
+          ChangeNotifierProvider(create: (_) => ScrollControllerViewModel(200 * responsiveSize.height)),
+        ], child: const MovieDetailsScreenBody()),
       ),
     );
   }

@@ -42,16 +42,11 @@ class MovieListWidget extends StatelessWidget {
           child: (movies.length >= 5)
               ? Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    for (int i = 0; i < 5; i++) MovieItem(movie: movies[i])
-                  ],
+                  children: [for (int i = 0; i < 5; i++) MovieItem(movie: movies[i])],
                 )
               : Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    for (int i = 0; i < movies.length; i++)
-                      MovieItem(movie: movies[i])
-                  ],
+                  children: [for (int i = 0; i < movies.length; i++) MovieItem(movie: movies[i])],
                 ),
         ),
         SizedBox(

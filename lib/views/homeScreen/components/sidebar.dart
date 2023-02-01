@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:io' show Platform;
 import 'package:flutter/services.dart';
 import 'package:flutter_scale_tap/flutter_scale_tap.dart';
 import 'package:flutter_svg/svg.dart';
@@ -22,8 +21,7 @@ class MySidebar extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                decoration:
-                    const BoxDecoration(color: Color.fromRGBO(51, 51, 51, 1.0)),
+                decoration: const BoxDecoration(color: Color.fromRGBO(51, 51, 51, 1.0)),
                 child: Column(
                   children: <Widget>[
                     SizedBox(
@@ -32,24 +30,20 @@ class MySidebar extends StatelessWidget {
                     Row(
                       children: [
                         SizedBox(
-                          width: 10 * responsiveSize.height,
-                        ),
-                        SvgPicture.asset(
-                          Assets.svgsAvatarDefault,
-                          height: 50,
-                          width: 50,
-                        ),
-                        SizedBox(
-                          width: 10 * responsiveSize.height,
+                          width: 70 * responsiveSize.width,
+                          child: SvgPicture.asset(
+                            Assets.svgsAvatarDefault,
+                            height: 50 * responsiveSize.height,
+                            width: 50 * responsiveSize.width,
+                          ),
                         ),
                         SizedBox(
-                          width: MediaQuery.of(context).size.width * 7 / 10 -
-                              70 * responsiveSize.width,
+                          width: MediaQuery.of(context).size.width * 7 / 10 - 70 * responsiveSize.width,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Vu Huy Hoang",
+                                "Username",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontFamily: Assets.fontsSVNGilroyRegular,
@@ -61,12 +55,11 @@ class MySidebar extends StatelessWidget {
                               ),
                               Text.rich(
                                   TextSpan(
-                                    text: "uchihavuhuyhoang@gmail.com",
+                                    text: "username_email@email_type.com",
                                     style: TextStyle(
                                         fontSize: 15 * responsiveSize.width,
                                         color: Colors.white,
-                                        fontFamily:
-                                            Assets.fontsSVNGilroyRegular,
+                                        fontFamily: Assets.fontsSVNGilroyRegular,
                                         fontStyle: FontStyle.italic),
                                   ),
                                   maxLines: 1,
@@ -82,7 +75,6 @@ class MySidebar extends StatelessWidget {
                   ],
                 ),
               ),
-
               SizedBox(
                 height: 20 * responsiveSize.height,
               ),
@@ -110,7 +102,6 @@ class MySidebar extends StatelessWidget {
                 height: 10 * responsiveSize.height,
               ),
               Divider(thickness: 0.5 * responsiveSize.width),
-
               SizedBox(
                 height: 10 * responsiveSize.height,
               ),
@@ -138,7 +129,6 @@ class MySidebar extends StatelessWidget {
                 height: 10 * responsiveSize.height,
               ),
               Divider(thickness: 0.5 * responsiveSize.width),
-
               SizedBox(
                 height: 10 * responsiveSize.height,
               ),
@@ -166,7 +156,6 @@ class MySidebar extends StatelessWidget {
                 height: 10 * responsiveSize.height,
               ),
               Divider(thickness: 0.5 * responsiveSize.width),
-
               SizedBox(
                 height: 10 * responsiveSize.height,
               ),

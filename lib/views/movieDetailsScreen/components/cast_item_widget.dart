@@ -17,9 +17,7 @@ class CastItem extends StatelessWidget {
     return ScaleTap(
       onPressed: () {},
       child: Padding(
-        padding: EdgeInsets.symmetric(
-            vertical: 15 * responsiveSize.width,
-            horizontal: 15 * responsiveSize.height),
+        padding: EdgeInsets.symmetric(vertical: 15 * responsiveSize.width, horizontal: 15 * responsiveSize.height),
         child: Container(
           width: 160 * responsiveSize.width,
           decoration: BoxDecoration(

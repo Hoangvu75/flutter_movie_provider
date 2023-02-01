@@ -5,7 +5,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:movie_app_mvvm/src/PColor.dart';
 import 'package:movie_app_mvvm/utils/app_utils.dart';
 import 'package:movie_app_mvvm/viewmodels/viewMoreMovieScreenViewModel/movie_api_viewmodel.dart';
-import 'package:movie_app_mvvm/views/viewMoreMovieScreen/view_more_movie_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../generated/assets.dart';
@@ -16,36 +15,36 @@ class ViewMoreMovieScreenBody extends StatefulWidget {
   const ViewMoreMovieScreenBody({super.key});
 
   @override
-  State<ViewMoreMovieScreenBody> createState() =>
-      _ViewMoreMovieScreenBodyState();
+  State<ViewMoreMovieScreenBody> createState() => _ViewMoreMovieScreenBodyState();
 }
 
 class _ViewMoreMovieScreenBodyState extends State<ViewMoreMovieScreenBody> {
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
+  late MovieApiViewModel mavm;
+  late ScrollControllerViewModel scvm;
 
   @override
   void initState() {
-    Provider.of<MovieApiViewModel>(context, listen: false).fetchMovies();
-    Provider.of<ScrollControllerViewModel>(context, listen: false)
-        .createScrollControlListener();
+    mavm = Provider.of<MovieApiViewModel>(context, listen: false);
+    scvm = Provider.of<ScrollControllerViewModel>(context, listen: false);
+
+    mavm.fetchMovies();
+    scvm.createScrollControlListener();
+
     super.initState();
   }
 
   @override
   void dispose() {
-    Provider.of<ScrollControllerViewModel>(context, listen: false)
-        .dismissController();
+    mavm.onDispose();
+    scvm.onDispose();
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final mavm = Provider.of<MovieApiViewModel>(context);
-    final scvm = Provider.of<ScrollControllerViewModel>(context);
+    mavm = Provider.of<MovieApiViewModel>(context, listen: true);
+    scvm = Provider.of<ScrollControllerViewModel>(context, listen: true);
 
     return RefreshIndicator(
       color: PColors.darkBlue,
@@ -81,31 +80,24 @@ class _ViewMoreMovieScreenBodyState extends State<ViewMoreMovieScreenBody> {
                 pinned: true,
                 snap: false,
                 floating: false,
-                expandedHeight: 175 * responsiveSize.width,
+                expandedHeight: 175 * responsiveSize.height,
                 elevation: 0,
                 automaticallyImplyLeading: false,
                 flexibleSpace: FlexibleSpaceBar(
-                  titlePadding: scvm.isTitleOnTop
-                      ? null
-                      : EdgeInsets.only(left: 20 * responsiveSize.width),
+                  titlePadding: scvm.isTitleOnTop ? null : EdgeInsets.only(left: 20 * responsiveSize.width),
                   title: Text(
                     scvm.isTitleOnTop
                         ? "${mavm.title_1} ${mavm.title_2}"
                         : "${mavm.title_1}\n${mavm.title_2}",
                     style: TextStyle(
                       color: PColors.darkBlue,
-                      fontFamily: scvm.isTitleOnTop
-                          ? Assets.fontsSVNGilroyBold
-                          : Assets.fontsSVNGilroyMedium,
-                      fontSize: scvm.isTitleOnTop
-                          ? 16 * responsiveSize.width
-                          : 24 * responsiveSize.width,
+                      fontFamily: scvm.isTitleOnTop ? Assets.fontsSVNGilroyBold : Assets.fontsSVNGilroyMedium,
+                      fontSize: scvm.isTitleOnTop ? 16 * responsiveSize.width : 24 * responsiveSize.width,
                     ),
                   ),
                   centerTitle: scvm.isTitleOnTop ? true : false,
                 ),
-                backgroundColor:
-                    scvm.isTitleOnTop ? Colors.white : Colors.transparent,
+                backgroundColor: scvm.isTitleOnTop ? Colors.white : Colors.transparent,
               ),
               const SliverToBoxAdapter(
                 child: SizedBox(
@@ -116,8 +108,7 @@ class _ViewMoreMovieScreenBodyState extends State<ViewMoreMovieScreenBody> {
                 delegate: SliverChildBuilderDelegate(
                   childCount: mavm.movieList.length,
                   (BuildContext context, int index) {
-                    return ViewMoreMovieItem(
-                        movie: mavm.movieList[index], key: ValueKey(index));
+                    return ViewMoreMovieItem(movie: mavm.movieList[index], key: ValueKey(index));
                   },
                 ),
               ),

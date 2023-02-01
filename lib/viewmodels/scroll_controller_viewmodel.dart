@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 
 import '../utils/app_utils.dart';
 
@@ -17,16 +18,20 @@ class ScrollControllerViewModel with ChangeNotifier {
   void scrollControllerChanged() {
     if (bodyScrollController!.offset > scrollOffset) {
       isTitleOnTop = true;
-      print("ontop");
+      if (kDebugMode) {
+        print("on top");
+      }
       notifyListeners();
     } else if (isTitleOnTop) {
       isTitleOnTop = false;
-      print("outtop");
+      if (kDebugMode) {
+        print("out top");
+      }
       notifyListeners();
     }
   }
 
-  void dismissController() {
+  void onDispose() {
     bodyScrollController!.dispose();
     bodyScrollController!.removeListener(scrollControllerChanged);
   }

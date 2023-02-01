@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_scale_tap/flutter_scale_tap.dart';
@@ -9,6 +12,7 @@ import 'package:provider/provider.dart';
 
 import '../../generated/assets.dart';
 import '../../src/PColor.dart';
+import '../../src/gradient_button.dart';
 import '../../viewmodels/movieDetailScreenViewModel/movie_details_api_viewmodel.dart';
 import '../../viewmodels/scroll_controller_viewmodel.dart';
 
@@ -20,22 +24,33 @@ class MovieDetailsScreenBody extends StatefulWidget {
 }
 
 class _MovieDetailsScreenBodyState extends State<MovieDetailsScreenBody> {
+  late MovieDetailsApiViewModel mdavm;
+  late MovieCreditsApiViewModel mcavm;
+  late ScrollControllerViewModel scvm;
+
   @override
   void initState() {
-    Provider.of<MovieDetailsApiViewModel>(context, listen: false)
-        .fetchMovieDetails();
-    Provider.of<MovieCreditsApiViewModel>(context, listen: false)
-        .fetchMovieCredits();
-    Provider.of<ScrollControllerViewModel>(context, listen: false)
-        .createScrollControlListener();
+    mdavm = Provider.of<MovieDetailsApiViewModel>(context, listen: false);
+    mcavm = Provider.of<MovieCreditsApiViewModel>(context, listen: false);
+    scvm = Provider.of<ScrollControllerViewModel>(context, listen: false);
+
+    mdavm.fetchMovieDetails();
+    mcavm.fetchMovieCredits();
+    scvm.createScrollControlListener();
     super.initState();
   }
 
   @override
+  void dispose() {
+    scvm.onDispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final mdavm = Provider.of<MovieDetailsApiViewModel>(context);
-    final mcavm = Provider.of<MovieCreditsApiViewModel>(context);
-    final scvm = Provider.of<ScrollControllerViewModel>(context);
+    mdavm = Provider.of<MovieDetailsApiViewModel>(context, listen: true);
+    mcavm = Provider.of<MovieCreditsApiViewModel>(context, listen: true);
+    scvm = Provider.of<ScrollControllerViewModel>(context, listen: true);
 
     return RefreshIndicator(
       color: PColors.darkBlue,
@@ -116,19 +131,16 @@ class _MovieDetailsScreenBodyState extends State<MovieDetailsScreenBody> {
                                       "Movie details",
                                       style: TextStyle(
                                         color: Colors.white,
-                                        fontFamily:
-                                            Assets.fontsSVNGilroyRegular,
+                                        fontFamily: Assets.fontsSVNGilroyRegular,
                                         fontSize: 20 * responsiveSize.width,
                                       ),
                                     ),
                                     Text.rich(
                                         TextSpan(
-                                          text: mdavm.movieDetail.title
-                                              .toString(),
+                                          text: mdavm.movieDetail.title.toString(),
                                           style: TextStyle(
                                             color: Colors.white,
-                                            fontFamily:
-                                                Assets.fontsSVNGilroyBold,
+                                            fontFamily: Assets.fontsSVNGilroyBold,
                                             fontSize: 25 * responsiveSize.width,
                                           ),
                                         ),
@@ -164,8 +176,7 @@ class _MovieDetailsScreenBodyState extends State<MovieDetailsScreenBody> {
               ),
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 10 * responsiveSize.width),
+                  padding: EdgeInsets.symmetric(horizontal: 10 * responsiveSize.width),
                   child: Text(
                     mdavm.loading ? "" : mdavm.movieDetail.overview.toString(),
                     style: TextStyle(
@@ -207,21 +218,36 @@ class _MovieDetailsScreenBodyState extends State<MovieDetailsScreenBody> {
                             ? Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  for (int i = 0; i < 9; i++)
-                                    CastItem(cast: mcavm.movieCredits.cast![i]),
+                                  for (int i = 0; i < 9; i++) CastItem(cast: mcavm.movieCredits.cast![i]),
                                 ],
                               )
-                            : Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                    for (int i = 0;
-                                        i < mcavm.movieCredits.cast!.length;
-                                        i++)
-                                      CastItem(
-                                          cast: mcavm.movieCredits.cast![i]),
-                                  ]),
+                            : Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+                                for (int i = 0; i < mcavm.movieCredits.cast!.length; i++)
+                                  CastItem(cast: mcavm.movieCredits.cast![i]),
+                              ]),
                       ),
               ),
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 50 * responsiveSize.height,
+                ),
+              ),
+              SliverToBoxAdapter(
+                  child: Container(
+                      padding:
+                          EdgeInsets.fromLTRB(15 * responsiveSize.width, 0, 15 * responsiveSize.width, 0),
+                      child: GradientButton(
+                          title: "Save",
+                          onTap: () async {
+                            // String filePath = Assets.movieSavedDB;
+                            // String contents = await rootBundle.loadString(filePath);
+                            // Map<String, dynamic> jsonMap = json.decode(contents);
+                            // List<dynamic> movieList = jsonMap['movie_list'];
+                            // movieList.add(mdavm.movieId);
+                            // jsonMap['movie_list'] = movieList;
+                            // String updatedContents = json.encode(jsonMap);
+                            // await File(filePath).writeAsString(updatedContents);
+                          }))),
               SliverToBoxAdapter(
                 child: SizedBox(
                   height: 100 * responsiveSize.height,

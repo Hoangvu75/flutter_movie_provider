@@ -23,10 +23,8 @@ abstract class ApiService {
 
   static ApiService create() {
     final dio = Dio();
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (HttpClient client) {
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (HttpClient client) {
+      client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
       return client;
     };
     dio.options.connectTimeout = 60000;
@@ -38,26 +36,24 @@ abstract class ApiService {
     );
   }
 
-  static ApiService createWithErrorHandler(Function cancelCallback,
-      Function confirmCallback, String errorContent) {
+  static ApiService createWithErrorHandler(
+      Function cancelCallback, Function confirmCallback, String errorContent) {
     final dio = Dio();
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (HttpClient client) {
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (HttpClient client) {
+      client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
       return client;
     };
     dio.options.connectTimeout = 60000;
     dio.interceptors.add(PrettyDioLogger());
 
     dio.interceptors.add(InterceptorsWrapper(
-        onError: (DioError e, ErrorInterceptorHandler handler) => {
-              if (e.response != null && e.response?.statusCode != 200)
+        onError: (DioError dioError, ErrorInterceptorHandler handler) => {
+              if (dioError.response != null && dioError.response?.statusCode != 200)
                 {
                   _customDialog.showErrorDialog(
                       AppUtils.mainContext,
                       SvgPicture.asset(Assets.svgsIcSystemError),
-                      "${e.response!.statusCode.toString()} ${e.response!.statusMessage.toString()}",
+                      "${dioError.response!.statusCode.toString()} ${dioError.response!.statusMessage.toString()}",
                       errorContent,
                       cancelCallback,
                       confirmCallback)
@@ -88,10 +84,13 @@ abstract class ApiService {
 
   // Get movie details
   @GET("movie/{id}")
-  Future<MovieDetailsResponse> getMovieDetails(
-      @Path("id") int id, @Query("api_key") String apiKey);
+  Future<MovieDetailsResponse> getMovieDetails(@Path("id") int id, @Query("api_key") String apiKey);
 
   @GET("movie/{id}/credits")
-  Future<MovieCreditsResponse> getMovieCredits(
-      @Path("id") int id, @Query("api_key") String apiKey);
+  Future<MovieCreditsResponse> getMovieCredits(@Path("id") int id, @Query("api_key") String apiKey);
+
+  // Search movies
+  @GET("/search/movie")
+  Future<MovieResponse> getSearchMovies(
+      @Query("api_key") String apiKey, @Query("query") String query, @Query("include_adult") bool includeAdult);
 }

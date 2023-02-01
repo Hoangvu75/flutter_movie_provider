@@ -4,8 +4,8 @@ import 'package:movie_app_mvvm/utils/app_utils.dart';
 import 'package:movie_app_mvvm/views/viewMoreMovieScreen/view_more_movie_screen_body.dart';
 import 'package:provider/provider.dart';
 
-import '../../viewmodels/viewMoreMovieScreenViewModel/movie_api_viewmodel.dart';
 import '../../viewmodels/scroll_controller_viewmodel.dart';
+import '../../viewmodels/viewMoreMovieScreenViewModel/movie_api_viewmodel.dart';
 
 class ViewMoreMovieScreen extends StatefulWidget {
   final String type;

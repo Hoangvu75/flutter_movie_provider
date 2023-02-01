@@ -18,8 +18,7 @@ class MovieItem extends StatelessWidget {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
-              builder: (context) => MovieDetailsScreen(id: movie.id!)),
+          MaterialPageRoute(builder: (context) => MovieDetailsScreen(id: movie.id!)),
         );
       },
       child: Padding(

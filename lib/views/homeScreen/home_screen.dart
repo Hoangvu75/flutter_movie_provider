@@ -22,9 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
         statusBarColor: Colors.transparent,
       ),
       child: Scaffold(
-        body: MultiProvider(providers: [
-          ChangeNotifierProvider(create: (_) => HomeApiViewModel())
-        ], child: const HomeScreenBody()),
+        body: MultiProvider(
+            providers: [ChangeNotifierProvider(create: (_) => HomeApiViewModel())], child: const HomeScreenBody()),
       ),
     );
   }
